@@ -2,35 +2,24 @@ import face_recognition
 import cv2
 import numpy as np
 
-# This is a demo of running face recognition on live video from your webcam. It's a little more complicated than the
-# other example, but it includes some basic performance tweaks to make things run a lot faster:
-#   1. Process each video frame at 1/4 resolution (though still display it at full resolution)
-#   2. Only detect faces in every other frame of video.
-
-# PLEASE NOTE: This example requires OpenCV (the `cv2` library) to be installed only to read from your webcam.
-# OpenCV is *not* required to use the face_recognition library. It's only required if you want to run this
-# specific demo. If you have trouble installing it, try any of the other demos that don't require it instead.
-
-# Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
 
-# Load a sample picture and learn how to recognize it.
-my_image = face_recognition.load_image_file("faces\\srijan.JPG")
+my_image = face_recognition.load_image_file("srijan.JPG")
 my_face_encoding = face_recognition.face_encodings(my_image)[0]
 
-# Load a second sample picture and learn how to recognize it.
-#biden_image = face_recognition.load_image_file("biden.jpg")
-#biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
+biden_image = face_recognition.load_image_file("faces\\Joe_Biden_portrait_2021.jpg")
+biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
 
-# Create arrays of known face encodings and their names
 known_face_encodings = [
     my_face_encoding,
-    #biden_face_encoding
+    biden_face_encoding
 ]
 known_face_names = [
     "Srijan Datta",
-    #"Joe Biden"
+    "Joe Biden"
 ]
+
+
 
 # Initialize some variables
 face_locations = []
@@ -40,7 +29,8 @@ process_this_frame = True
 
 while True:
     # Grab a single frame of video
-    ret, frame = video_capture.read()
+    ret, reverse_frame = video_capture.read()
+    frame = cv2.flip(reverse_frame, 1)
 
     # Only process every other frame of video to save time
     if process_this_frame:
@@ -73,6 +63,7 @@ while True:
 
             face_names.append(name)
 
+    #skips a frame 
     process_this_frame = not process_this_frame
 
 
@@ -90,7 +81,7 @@ while True:
         # Draw a label with a name below the face
         cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
         font = cv2.FONT_HERSHEY_DUPLEX
-        cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+        cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), -1)
 
     # Display the resulting image
     cv2.imshow('testing', frame)
