@@ -6,6 +6,7 @@ import numpy as np
 
 
 class SimpleFacerec:
+    img_counter = 0
 
     def __init__(self):
         self.known_face_encodings = []
@@ -43,7 +44,7 @@ class SimpleFacerec:
 
     def detect_known_faces(self, frame):
 
-
+        
             small_frame = cv2.resize(frame, (0, 0), fx=self.frame_resizing, fy=self.frame_resizing)
             # Find all the faces and face encodings in the current frame of video
             # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
@@ -67,13 +68,19 @@ class SimpleFacerec:
                 best_match_index = np.argmin(face_distances)
                 if matches[best_match_index]:
                     name = self.known_face_names[best_match_index]
+
+
+                if name == "Unknown": 
+                    temp_name = input('what is this person\'s name?')
+                    img_name = "{}.png".format(temp_name)
+                    path = 'faces'
+                    cv2.imwrite(os.path.join(path, img_name), frame)
+                    print("{} written!".format(img_name))
+                    self.img_counter += 1
+
                 face_names.append(name)
 
-                if name == "Unknown":
-                    print('what is the name')
-                    user_given_name = input()
-
-                    name = user_given_name
+                
 
             # Convert to numpy array to adjust coordinates with frame resizing quickly
             face_locations = np.array(face_locations)
