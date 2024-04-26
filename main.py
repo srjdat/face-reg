@@ -1,9 +1,15 @@
+#create a folder for the faces elsewhere 
+#paste the path to that folder when prompted
+#phray that this works
+
 import cv2
 from simple_facerec import SimpleFacerec
 
+path_to_faces = input('enter face folder location ')
+print(path_to_faces)
 
 sfr = SimpleFacerec()
-sfr.load_encoding_images('faces/')
+sfr.load_encoding_images('C:/Users/srjda/Desktop/code/faces/')
 
 process_this_frame = True
 
