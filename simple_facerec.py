@@ -70,13 +70,24 @@ class SimpleFacerec:
                     name = self.known_face_names[best_match_index]
 
 
+                #if it detects an unknown face it'll take a photo and add it to the database
+                #after it's done adding i can just run the face encoding method again? 
+                #and hopefully it should work
                 if name == "Unknown": 
-                    temp_name = input('what is this person\'s name?')
+                    #gets the input of the person in the frame
+                    temp_name = input('what is this person\'s name? ')
+
+                    #creates the image name aka person's name
                     img_name = "{}.png".format(temp_name)
-                    path = 'faces'
+
+                    #uploads the screenshot of the frame ot the faces folder
+                    path = 'C:/Users/srjda/Desktop/code/faces/'
                     cv2.imwrite(os.path.join(path, img_name), frame)
+
+                    #outputs that the file has been uploaded
                     print("{} written!".format(img_name))
-                    self.img_counter += 1
+
+                    self.load_encoding_images('C:/Users/srjda/Desktop/code/faces/')
 
                 face_names.append(name)
 
